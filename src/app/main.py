@@ -4,8 +4,10 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 
 from .auth import TokenClaims, verify_token
 from .repository import TenantContext, TenantScopedRepository
+from .ops_console import router as ops_router
 
 app = FastAPI(title="tenant-user-center")
+app.include_router(ops_router)
 
 
 def current_context(request: Request) -> TenantContext:
