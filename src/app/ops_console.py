@@ -6,9 +6,12 @@
 
 import hashlib
 import jwt
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 
-router = APIRouter(prefix="/api/ops", tags=["operations"])
+from .ops_access import require_ops
+
+# 所有运营端点先过 require_ops：未认证 401，非运营角色 403
+router = APIRouter(prefix="/api/ops", tags=["operations"], dependencies=[Depends(require_ops)])
 
 
 def _raw_query(sql: str):
